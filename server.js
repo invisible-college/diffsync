@@ -1,5 +1,5 @@
 
-var diffsync = require('./diffsync.js')
+var diffsync = require(`${__dirname}/diffsync.js`)
 console.log('diffsync version ' + diffsync.version)
 
 // Parse command-line arguments

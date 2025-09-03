@@ -1,6 +1,6 @@
 {
   "name": "@braid.org/diffsync",
-  "version": "0.1.8",  
+  "version": "0.1.9",  
   "main": "diffsync.js",
   "bin": {
     "diffsync": "./server.js"
