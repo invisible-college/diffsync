@@ -10,15 +10,19 @@ How are we able to prune history?  Well, because this algorithm isn't your norma
 
 See the index.html file for an example usage.
 
-If you're curious, you can also read up on our early [hypothesizing](https://stackoverflow.com/a/48652362/440344) about the relationship between version controll systems and OT and CRDT algorithms.  This was one of our earliest experiments into finding a universal synchronization algorithm and framework, which has now led to the [CTM theory](https://braid.org/time-machines) and the interoperable [Braid synchronization protocols](https://braid.org).
+If you're curious, you can also read up on our early [hypothesizing](https://stackoverflow.com/a/48652362/440344) about the relationship between version control systems and OT and CRDT algorithms.  This was one of our earliest experiments into finding a universal synchronization algorithm and framework, which has now led to the [CTM theory](https://braid.org/time-machines) and the interoperable [Braid synchronization protocols](https://braid.org).
 
-## Installation
+## Wiki Server
+
+Diffsync comes with a built-in collaborative wiki server that demonstrates the power of the algorithm.
+
+### Installation
 
 ```bash
 npm install -g @braid.org/diffsync
 ```
 
-## Quick Start
+### Quick Start
 
 1. Create a data directory for the wiki:
    ```bash
@@ -34,11 +38,9 @@ npm install -g @braid.org/diffsync
    http://localhost:60607/any-page-name
    ```
 
-You should see a giant empty text box, and if you open another browser tab to http://localhost:60607/any-page-name, you can edit the text collaboratively!
+You should see a giant empty text box, and if you open another browser tab to the same URL, you can edit the text collaboratively!
 
-## Configuration
-
-### Command Line Options
+### Configuration
 
 ```bash
 diffsync [port] [cert_file] [key_file]
@@ -46,22 +48,20 @@ diffsync [port] [cert_file] [key_file]
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `port` | Port number to serve on | `1001` |
+| `port` | Port number to serve on | `60607` |
 | `cert_file` | SSL certificate file for HTTPS | none |
 | `key_file` | SSL key file for HTTPS | none |
 
-### Examples
+**Examples:**
 
-**Run on a different port:**
 ```bash
+# Run on a different port
 diffsync 8080
-```
 
-**Run with HTTPS:**
-```bash
+# Run with HTTPS
 diffsync 443 /path/to/cert.pem /path/to/key.pem
 ```
 
-## Data Storage
+### Data Storage
 
-The diffsync wiki uses sqlite3, and will create files like `db.sqlite`, `db.sqlite-shm`, and `db.sqlite-wal` in your current working directory to store all wiki pages and data.
+The wiki uses SQLite and will create files like `db.sqlite`, `db.sqlite-shm`, and `db.sqlite-wal` in your current working directory to store all wiki pages and data.

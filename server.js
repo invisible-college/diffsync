@@ -48,13 +48,13 @@ if (cert_file && key_file && fs.existsSync(key_file) && fs.existsSync(cert_file)
         cert : fs.readFileSync(cert_file)
     })
 } else if (cert_file || key_file) {
-    // Warn if only one file was provided or files don't exist
     if (!cert_file || !key_file) {
         console.log('Warning: Both cert_file and key_file must be provided for HTTPS')
-    } else if (!fs.existsSync(cert_file) || !fs.existsSync(key_file)) {
+        process.exit(1)
+    } else {
         console.log('Warning: SSL certificate files not found')
+        process.exit(1)
     }
-    console.log('Using HTTP (no SSL)')
 }
 
 var web_server = require(server_type).createServer(...server_args)
