@@ -12,9 +12,20 @@ See the index.html file for an example usage.
 
 If you're curious, you can also read up on our early [hypothesizing](https://stackoverflow.com/a/48652362/440344) about the relationship between version controll systems and OT and CRDT algorithms.  This was one of our earliest experiments into finding a universal synchronization algorithm and framework, which has now led to the [CTM theory](https://braid.org/time-machines) and the interoperable [Braid synchronization protocols](https://braid.org).
 
-## Installation Instructions
+## Installation
 
-> npm i
-> node server.js
-open http://localhost:60607/test in two browser windows, and there should be a collaborative text editor
+```bash
+# Clone the repository
+git clone https://github.com/invisible-college/diffsync.git
 
+# Navigate into the project directory
+cd diffsync
+
+# Install dependencies
+npm install
+
+# Start the server
+node server.js
+```
+
+Then open http://localhost:60607/test in two browser windows to see the collaborative text editor in action. Type in either window and watch your changes sync in real-time!
