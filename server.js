@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 var diffsync = require(`${__dirname}/diffsync.js`)
 console.log('diffsync version ' + diffsync.version)
