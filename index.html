@@ -1,6 +1,6 @@
 
 <body>
-<script src="./diffsync.js"></script>
+<script src="https://invisible-college.github.io/diffsync/diffsync.js"></script>
 <script>
 
 var t = document.createElement('textarea')
@@ -9,9 +9,8 @@ t.style.height = '100%'
 document.body.append(t)
 
 var ds = diffsync.create_client({
-	// ws_url : 'ws://localhost:' + diffsync.port,
-	ws_url : 'wss://invisible.college:' + diffsync.port,
-	channel : 'goop4',
+	ws_url : location.origin.replace(/^http/, 'ws'),
+	channel : location.pathname.slice(1),
 	get_text : function () {
 	    return t.value
 	},

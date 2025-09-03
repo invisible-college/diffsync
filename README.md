@@ -11,3 +11,10 @@ How are we able to prune history?  Well, because this algorithm isn't your norma
 See the index.html file for an example usage.
 
 If you're curious, you can also read up on our early [hypothesizing](https://stackoverflow.com/a/48652362/440344) about the relationship between version controll systems and OT and CRDT algorithms.  This was one of our earliest experiments into finding a universal synchronization algorithm and framework, which has now led to the [CTM theory](https://braid.org/time-machines) and the interoperable [Braid synchronization protocols](https://braid.org).
+
+## Installation Instructions
+
+> npm i
+> node server.js
+open http://localhost:60607/test in two browser windows, and there should be a collaborative text editor
+

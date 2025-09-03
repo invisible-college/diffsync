@@ -1,7 +1,8 @@
 {
+  "version": "0.1.2",  
   "dependencies": {
-    "better-sqlite3": "^4.0.3",
-    "statebus": "^6.0.44",
+    "better-sqlite3": "^12.2.0",
+    "statebus": "^6.0.125",
     "ws": "^3.1.0"
   }
 }

@@ -30,18 +30,17 @@ for (var key in bus.cache) {
 }
 
 var fs = require('fs')
-var web_server = null
-var server_type = null
-if (fs.existsSync('privkey.pem') && fs.existsSync('fullchain.pem')) {
-    web_server = require('https').createServer({
-        key : fs.readFileSync('privkey.pem'),
-        cert : fs.readFileSync('fullchain.pem')
-    })
-    server_type = 'https'
-} else {
-    web_server = require('http').createServer()
-    server_type = 'http'
-}
+var server_args = [async (req, res) => {
+    res.end(await require('fs').promises.readFile(`${__dirname}/index.html`))
+}]
+var server_type = 'http' +
+    (fs.existsSync('privkey.pem') && fs.existsSync('fullchain.pem') ? 's' : '')
+if (server_type === 'https') server_args.unshift({
+    key : fs.readFileSync('privkey.pem'),
+    cert : fs.readFileSync('fullchain.pem')
+})
+var web_server = require(server_type).createServer(...server_args)
+
 var port = diffsync.port
 web_server.listen(port)
 console.log('openning ' + server_type + ' server on port ' + port)
