@@ -2,6 +2,10 @@
 var diffsync = require('./diffsync.js')
 console.log('diffsync version ' + diffsync.version)
 
+// Parse command-line arguments
+var [port, cert_file, key_file] = process.argv.slice(2)
+port = port ? parseInt(port) : diffsync.port
+
 var bus = require('statebus')()
 bus.sqlite_store({save_sync: true})
 
@@ -33,15 +37,27 @@ var fs = require('fs')
 var server_args = [async (req, res) => {
     res.end(await require('fs').promises.readFile(`${__dirname}/index.html`))
 }]
-var server_type = 'http' +
-    (fs.existsSync('privkey.pem') && fs.existsSync('fullchain.pem') ? 's' : '')
-if (server_type === 'https') server_args.unshift({
-    key : fs.readFileSync('privkey.pem'),
-    cert : fs.readFileSync('fullchain.pem')
-})
+
+// Only use HTTPS if both cert and key files are provided and exist
+var server_type = 'http'
+if (cert_file && key_file && fs.existsSync(key_file) && fs.existsSync(cert_file)) {
+    server_type = 'https'
+    server_args.unshift({
+        key : fs.readFileSync(key_file),
+        cert : fs.readFileSync(cert_file)
+    })
+} else if (cert_file || key_file) {
+    // Warn if only one file was provided or files don't exist
+    if (!cert_file || !key_file) {
+        console.log('Warning: Both cert_file and key_file must be provided for HTTPS')
+    } else if (!fs.existsSync(cert_file) || !fs.existsSync(key_file)) {
+        console.log('Warning: SSL certificate files not found')
+    }
+    console.log('Using HTTP (no SSL)')
+}
+
 var web_server = require(server_type).createServer(...server_args)
 
-var port = diffsync.port
 web_server.listen(port)
 console.log('openning ' + server_type + ' server on port ' + port)
 var WebSocket = require('ws')

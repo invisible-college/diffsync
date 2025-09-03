@@ -1,7 +1,10 @@
 {
   "name": "@braid.org/diffsync",
-  "version": "0.1.7",  
+  "version": "0.1.8",  
   "main": "diffsync.js",
+  "bin": {
+    "diffsync": "./server.js"
+  },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
     "statebus": "^6.0.125",

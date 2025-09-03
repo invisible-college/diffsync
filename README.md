@@ -15,17 +15,53 @@ If you're curious, you can also read up on our early [hypothesizing](https://sta
 ## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/invisible-college/diffsync.git
-
-# Navigate into the project directory
-cd diffsync
-
-# Install dependencies
-npm install
-
-# Start the server
-node server.js
+npm install -g @braid.org/diffsync
 ```
 
-Then open http://localhost:60607/test in two browser windows to see the collaborative text editor in action. Type in either window and watch your changes sync in real-time!
+## Quick Start
+
+1. Create a data directory for the wiki:
+   ```bash
+   mkdir my_wiki
+   cd my_wiki
+   ```
+2. Run the diffsync wiki server:
+   ```bash
+   diffsync
+   ```
+3. Open your browser and navigate to:
+   ```
+   http://localhost:60607/any-page-name
+   ```
+
+You should see a giant empty text box, and if you open another browser tab to http://localhost:60607/any-page-name, you can edit the text collaboratively!
+
+## Configuration
+
+### Command Line Options
+
+```bash
+diffsync [port] [cert_file] [key_file]
+```
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `port` | Port number to serve on | `1001` |
+| `cert_file` | SSL certificate file for HTTPS | none |
+| `key_file` | SSL key file for HTTPS | none |
+
+### Examples
+
+**Run on a different port:**
+```bash
+diffsync 8080
+```
+
+**Run with HTTPS:**
+```bash
+diffsync 443 /path/to/cert.pem /path/to/key.pem
+```
+
+## Data Storage
+
+The diffsync wiki uses sqlite3, and will create files like `db.sqlite`, `db.sqlite-shm`, and `db.sqlite-wal` in your current working directory to store all wiki pages and data.
