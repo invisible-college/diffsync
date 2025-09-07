@@ -10,42 +10,30 @@ How are we able to prune history?  Well, because this algorithm isn't your norma
 
 If you're curious, you can also read up on our early [hypothesizing](https://stackoverflow.com/a/48652362/440344) about the relationship between version control systems and OT and CRDT algorithms.  This was one of our earliest experiments into finding a universal synchronization algorithm and framework, which has now led to the [CTM theory](https://braid.org/time-machines) and the interoperable [Braid synchronization protocols](https://braid.org).
 
-## How to Use
+## Demo
 
-The diffsync module provides three main functions:
-- **Server creation** - Sets up a diffsync websocket server, which handles many documents.
-- **Client creation** - Connects to a diffsync websocket server, to a specific document.
-- **Core minigit object** - The underlying git-like CRDT that powers the text merging, typically used internally by the client and server, and does not include any web technology itself.
+```
+git clone https://github.com/invisible-college/diffsync.git
+cd diffsync
+npm install
+node server.js
+```
+Open `index.html` in a couple browser tabs. Try typing in one tab, and see the edits appear in the other.
 
-### Server
+## API
 
-To run a diffsync websocket server, you have two options:
+```
+// in node, include as
+var diffsync = require('@braid.org/diffsync')
 
-#### Option 1: Install globally and run from command line
-
-```bash
-npm install -g @braid.org/diffsync
-
-diffsync [port] [cert_file] [key_file]
+<!-- in a webpage, include as -->
+<script src="https://unpkg.com/@braid.org/diffsync"></script>
 ```
 
-This starts a server with a websocket endpoint defaulting to `ws://localhost:60607`.
-
-The server uses SQLite for persistence, creating files like `db.sqlite` in your current working directory.
-
-#### Option 2: Programmatic usage
-
-See [`server.js`](https://github.com/invisible-college/diffsync/blob/gh-pages/server.js) for a complete example of creating a server programmatically within your application.
-
-### Client
-
-For a complete working example, see [`index.html`](https://github.com/invisible-college/diffsync/blob/gh-pages/index.html).
-
-If you have the server running, you can open this file in a couple browser tabs, and experience some collaborative editing.
-
-### Core (minigit)
-
-The core of diffsync is "minigit" - a minimal git-like implementation with two primary operations: `commit` and `merge`. While you typically won't need to use this directly, here's a brief overview via example:
+The `diffsync` module provides three functions:
+- `create_server` - Creates a websocket server, see [`server.js`](https://github.com/invisible-college/diffsync/blob/gh-pages/server.js) for a working example.
+- `create_client` - Connects to a websocket server, see [`index.html`](https://github.com/invisible-college/diffsync/blob/gh-pages/index.html) for a working example.
+- `create_minigit` - The underlying git-like CRDT that powers the text merging, used internally by the client and server. While you typically won't need to use this directly, here's a brief overview via example:
 
 ```javascript
 // Create two independent minigit instances
@@ -63,5 +51,3 @@ console.log(m1.cache) // prints "AB"
 m2.merge(c1)
 console.log(m2.cache) // also prints "AB"
 ```
-
-Notice how both instances converge to the same state ("AB") regardless of merge order - this is the power of the underlying CRDT-like algorithm.
