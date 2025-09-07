@@ -1,11 +1,7 @@
-#!/usr/bin/env node
-
 var diffsync = require(`${__dirname}/diffsync.js`)
 console.log('diffsync version ' + diffsync.version)
 
-// Parse command-line arguments
-var [port, cert_file, key_file] = process.argv.slice(2)
-port = port ? parseInt(port) : diffsync.port
+var port = process.argv[2] ? parseInt(process.argv[2]) : diffsync.port
 
 var bus = require('statebus')()
 bus.sqlite_store({save_sync: true})
@@ -34,35 +30,12 @@ for (var key in bus.cache) {
     }
 }
 
-var fs = require('fs')
-var server_args = []
+var server = require('http').createServer()
+server.listen(port)
+console.log('listening on port ' + port)
+var wss = new (require('ws').Server)({ server })
 
-// Only use HTTPS if both cert and key files are provided and exist
-var server_type = 'http'
-if (cert_file && key_file && fs.existsSync(key_file) && fs.existsSync(cert_file)) {
-    server_type = 'https'
-    server_args.unshift({
-        key : fs.readFileSync(key_file),
-        cert : fs.readFileSync(cert_file)
-    })
-} else if (cert_file || key_file) {
-    if (!cert_file || !key_file) {
-        console.log('Warning: Both cert_file and key_file must be provided for HTTPS')
-        process.exit(1)
-    } else {
-        console.log('Warning: SSL certificate files not found')
-        process.exit(1)
-    }
-}
-
-var web_server = require(server_type).createServer(...server_args)
-
-web_server.listen(port)
-console.log('openning ' + server_type + ' server on port ' + port)
-var WebSocket = require('ws')
-var wss = new WebSocket.Server({ server : web_server })
-
-var diff_server = diffsync.create_server({
+diffsync.create_server({
     wss : wss,
     initial_data : channels,
     on_change : function (changes) {
