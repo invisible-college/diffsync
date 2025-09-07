@@ -9,8 +9,8 @@ t.style.height = '100%'
 document.body.append(t)
 
 var ds = diffsync.create_client({
-	ws_url : location.origin.replace(/^http/, 'ws'),
-	channel : location.pathname.slice(1),
+	ws_url : 'ws://localhost:' + diffsync.port,
+	channel : 'goop4',
 	get_text : function () {
 	    return t.value
 	},

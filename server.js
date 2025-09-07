@@ -35,9 +35,7 @@ for (var key in bus.cache) {
 }
 
 var fs = require('fs')
-var server_args = [async (req, res) => {
-    res.end(await require('fs').promises.readFile(`${__dirname}/index.html`))
-}]
+var server_args = []
 
 // Only use HTTPS if both cert and key files are provided and exist
 var server_type = 'http'
