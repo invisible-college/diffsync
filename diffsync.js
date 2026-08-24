@@ -576,7 +576,7 @@ diffsync.create_minigit = function () {
     }
 
     self.rec_merge = function (these) {
-        these = Object.keys(these)
+        these = Object.keys(these).sort()
         if (these.length == 0) { return '' }
         var r = self.get_text(these[0])
         if (these.length == 1) { return r }
